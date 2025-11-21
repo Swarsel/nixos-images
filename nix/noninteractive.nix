@@ -10,9 +10,6 @@
   ];
 
   imports = [
-    ./zfs-minimal.nix
-    ./python-minimal.nix
-    ./noveau-workaround.nix
     # reduce closure size by removing perl
     "${modulesPath}/profiles/perlless.nix"
     # FIXME: we still are left with nixos-generate-config due to nixos-install-tools
@@ -75,21 +72,7 @@
      boot.supportedFilesystems = [
        "ext4"
        "btrfs"
-       ## quiet huge dependency closure
-       #"cifs"
-       "f2fs"
-       ## anyone still using this over ext4?
-       #"jfs"
-       "ntfs"
-       ## no longer seems to be maintained, anyone still using it?
-       #"reiserfs"
-       "vfat"
        "xfs"
-     ];
-     boot.kernelModules = [
-       # we have to explicitly enable this, otherwise it is not loaded even when creating a raid:
-       # https://github.com/nix-community/nixos-anywhere/issues/249
-       "dm-raid"
      ];
   } // lib.optionalAttrs (options.hardware ? firmwareCompression) {
     hardware.firmwareCompression = "xz";
